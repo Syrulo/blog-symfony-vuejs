@@ -1,0 +1,14 @@
+# Node.js
+/frontend/node_modules/
+
+# Symfony
+/backend/var/
+/backend/vendor/
+
+# Docker
+.env
+.docker-compose.override.yml
+
+# IDE settings
+.idea/
+.vscode/

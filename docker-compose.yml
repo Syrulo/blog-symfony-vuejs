@@ -1,0 +1,83 @@
+services:
+  db: 
+    image: mysql
+    container_name: db_projet_j
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: projet_j
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    networks:
+      - dev
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_projet_j
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: db
+    networks:
+      - dev
+
+  symfony:
+    build: 
+      context: ./symfony # Dossier contenant le Dockerfile de Symfony
+    container_name: symfony_projet_j_api
+    restart: always
+    volumes:
+      - ./symfony/backend:/var/www/backend
+      - ./symfony/backend/config/jwt:/var/www/backend/config/jwt
+    networks:
+      - dev
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_projet_j
+    restart: always
+    ports:
+      - "8080:80"  # Le port 80 pour accéder au serveur Nginx
+    volumes:
+      # Monte ton fichier nginx.conf
+      - ./symfony/backend/nginx.conf:/etc/nginx/nginx.conf 
+      # Monte les fichiers
+      - ./symfony/backend:/var/www/backend
+    networks:
+      - dev
+
+  php:
+    image: php:8.3-fpm
+    container_name: php
+    volumes: 
+      - ./symfony/backend:/var/www/backend
+    networks:
+      - dev
+
+  vuejs:
+    build:
+      context: ./vuejs  # Le chemin vers ton dossier Vue.js
+      dockerfile: Dockerfile  # On spécifie le Dockerfile à utiliser pour Vue.js
+    container_name: vuejs_projet_j
+    restart: always
+    ports:
+      - "5173:5173"  # Port pour Vue.js (hôte:conteneur)
+    volumes:
+      - ./vuejs/frontend:/app # Synchroniser le code Vue.js avec le conteneur
+      - node_modules:/app/node_modules  # Utilisation d'un volume Docker pour node_modules
+    networks:
+      - dev
+    command: npm run dev  # Démarrer le serveur Vue.js avec Vite
+
+networks:
+  dev:
+    driver: bridge
+
+volumes:
+  db-data:
+  node_modules:
