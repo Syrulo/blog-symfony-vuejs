@@ -1,11 +1,24 @@
 # Variables
+
+# Utiliser le conteneur par défaut ou un autre conteneur au besoin
+EXEC_CONTAINER = symfony_projet_j_api
+
+# Conteneur Vue.js
+VUE_EXEC_CONTAINER = vuejs_projet_j
+
+# Commandes Docker
 DOCKER = docker
 DOCKER_COMPOSE = docker-compose
-EXEC = $(DOCKER) exec -w /var/www/project www_projet_j
+
+# Commandes Symfony (dans le conteneur Symfony)
+EXEC = $(DOCKER) exec -w /var/www/backend $(EXEC_CONTAINER)
 PHP = $(EXEC) php
 COMPOSER = $(EXEC) composer
-NPM = $(EXEC) npm
 SYMFONY_CONSOLE = $(PHP) bin/console
+
+# Commandes Vue.js (dans le conteneur Vue.js)
+VUE_EXEC = $(DOCKER) exec -w /app $(VUE_EXEC_CONTAINER)
+NPM = $(VUE_EXEC) npm
 
 # Colors
 GREEN = /bin/echo -e "\x1b[32m\#\# $1\x1b[0m"
@@ -15,14 +28,49 @@ RED = /bin/echo -e "\x1b[31m\#\# $1\x1b[0m"
 init: ## Init the project
 	$(MAKE) docker-start
 	$(MAKE) composer-install
-	@$(call GREEN, "The application is available at: http://127.0.0.1:8000/.")
+	@$(call GREEN, "The symfony application is available at: http://127.0.0.1:8080/.")
+	@$(call GREEN, "The phpmyadmin application is available at: http://127.0.0.1:8081/.")
+	@$(call GREEN, "The vue.js application is available at: http://127.0.0.1:5173/.")
 
 cache-clear: ## Clear cache
 	$(SYMFONY_CONSOLE) cache:clear
 
+## —— ✅ Test ——
+.PHONY: tests
+tests: ## Run all tests
+	$(MAKE) database-init-test
+	$(PHP) bin/phpunit --testdox tests/Unit/
+	$(PHP) bin/phpunit --testdox tests/Functional/
+	$(PHP) bin/phpunit --testdox tests/E2E/
+
+database-init-test: ## Init database for test
+	$(SYMFONY_CONSOLE) d:d:d --force --if-exists --env=test
+	$(SYMFONY_CONSOLE) d:d:c --env=test
+	$(SYMFONY_CONSOLE) d:m:m --no-interaction --env=test
+	$(SYMFONY_CONSOLE) d:f:l --no-interaction --env=test
+
+unit-test: ## Run unit tests
+	$(MAKE) database-init-test
+	$(PHP) bin/phpunit --testdox tests/Unit/
+
+functional-test: ## Run functional tests
+	$(MAKE) database-init-test
+	$(PHP) bin/phpunit --testdox tests/Functional/
+
 ## -- 🐋 Docker --
+start: ## Start app
+	$(MAKE) docker-start
+	@$(call GREEN, "The symfony application is available at: http://127.0.0.1:8080/.")
+	@$(call GREEN, "The phpmyadmin application is available at: http://127.0.0.1:8081/.")
+	@$(call GREEN, "The vue.js application is available at: http://127.0.0.1:5173/.") 
 docker-start: ## Start app
 	$(DOCKER_COMPOSE) up -d
+
+stop: ## Stop app
+	$(MAKE) docker-stop
+docker-stop: 
+	$(DOCKER_COMPOSE) stop
+	@$(call RED,"The containers are now stopped.")
 
 ## -- 🎻 Composer --
 composer-install: ## Install dependencies
@@ -61,6 +109,19 @@ database-fixtures-load: ## Load fixtures
 
 fixtures: ## Alias : database-fixtures-load
 	$(MAKE) database-fixtures-load
+
+## -- 📦 NPM --
+npm-install: ## Install NPM dependencies in Vue.js container
+	$(NPM) install
+
+npm-run-dev: ## Run Vue.js dev server
+	$(NPM) run dev
+
+npm-build: ## Build Vue.js project for production
+	$(NPM) run build
+
+npm-lint: ## Run linting on Vue.js project
+	$(NPM) run lint
 
 ## —— 🛠️  Others ——
 help: ## List of commands
