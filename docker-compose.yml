@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     ports:
-      - 8081:80
+      - 8080:80
     environment:
       PMA_HOST: db
     networks:
@@ -30,34 +30,14 @@ services:
       context: ./symfony # Dossier contenant le Dockerfile de Symfony
     container_name: symfony_projet_j_api
     restart: always
+    ports: 
+      - "8000:80"
     volumes:
+      - ./symfony/backend/vhosts:/etc/apache2/sites-enabled
       - ./symfony/backend:/var/www/backend
       - ./symfony/backend/config/jwt:/var/www/backend/config/jwt
     networks:
       - dev
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx_projet_j
-    restart: always
-    ports:
-      - "8080:80"  # Le port 80 pour accéder au serveur Nginx
-    volumes:
-      # Monte ton fichier nginx.conf
-      - ./symfony/backend/nginx.conf:/etc/nginx/nginx.conf 
-      # Monte les fichiers
-      - ./symfony/backend:/var/www/backend
-    networks:
-      - dev
-
-  php:
-    image: php:8.3-fpm
-    container_name: php
-    volumes: 
-      - ./symfony/backend:/var/www/backend
-    networks:
-      - dev
-
   vuejs:
     build:
       context: ./vuejs  # Le chemin vers ton dossier Vue.js

@@ -9,7 +9,7 @@ export default defineConfig({
     port: 5173,        // Tu peux définir le port ici aussi
     proxy: {
       '/api': {
-        target: 'http://symfony:8080',  // Remplace par le nom de ton service backend dans docker-compose.yml
+        target: 'http://symfony:8000',  // Remplace par le nom de ton service backend dans docker-compose.yml
         changeOrigin: true,
         secure: false,
       },

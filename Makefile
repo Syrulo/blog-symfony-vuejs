@@ -28,8 +28,8 @@ RED = /bin/echo -e "\x1b[31m\#\# $1\x1b[0m"
 init: ## Init the project
 	$(MAKE) docker-start
 	$(MAKE) composer-install
-	@$(call GREEN, "The symfony application is available at: http://127.0.0.1:8080/.")
-	@$(call GREEN, "The phpmyadmin application is available at: http://127.0.0.1:8081/.")
+	@$(call GREEN, "The symfony application is available at: http://127.0.0.1:8000/.")
+	@$(call GREEN, "The phpmyadmin application is available at: http://127.0.0.1:8080/.")
 	@$(call GREEN, "The vue.js application is available at: http://127.0.0.1:5173/.")
 
 cache-clear: ## Clear cache
@@ -60,8 +60,8 @@ functional-test: ## Run functional tests
 ## -- 🐋 Docker --
 start: ## Start app
 	$(MAKE) docker-start
-	@$(call GREEN, "The symfony application is available at: http://127.0.0.1:8080/.")
-	@$(call GREEN, "The phpmyadmin application is available at: http://127.0.0.1:8081/.")
+	@$(call GREEN, "The symfony application is available at: http://127.0.0.1:8000/.")
+	@$(call GREEN, "The phpmyadmin application is available at: http://127.0.0.1:8080/.")
 	@$(call GREEN, "The vue.js application is available at: http://127.0.0.1:5173/.") 
 docker-start: ## Start app
 	$(DOCKER_COMPOSE) up -d

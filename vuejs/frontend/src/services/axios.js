@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;  // Autoriser les cookies et les credenti
 
 // Crée une instance Axios pour configurer l'API
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api/', // L'URL de l'API Symfony
+  baseURL: 'http://localhost:8000/api/', // L'URL de l'API Symfony
   headers: {
     'Content-Type': 'application/json',
   }

@@ -1,12 +1,13 @@
 # Utiliser l'image PHP 8.3
-FROM php:8.3-fpm
+FROM php:8.3-apache
 
   # Mise à jour des dépôts et installation des paquets système et bibliothèques nécessaires
-RUN apt-get update \
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+  \
+  && apt-get update \
   && apt-get upgrade -y \
   && apt-get install -y --no-install-recommends \
-      locales apt-utils git libicu-dev g++ \
-      libpng-dev libxml2-dev libzip-dev libonig-dev libxslt-dev unzip \
+  locales apt-utils git libicu-dev g++ libpng-dev libxml2-dev libzip-dev libonig-dev libxslt-dev unzip \
   \
   # Configurer les locales (anglais et français)
   && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
@@ -35,3 +36,6 @@ RUN apt-get update \
 
 # Définir le répertoire de travail
 WORKDIR /var/www/backend
+
+# Copier la configuration d'Apache si nécessaire
+# COPY ./apache/vhosts.conf /etc/apache2/sites-available/000-default.conf
