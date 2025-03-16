@@ -21,7 +21,7 @@ Un projet **API-first** utilisant **Symfony** pour l'API, un **front-end Vue.js*
 - **JWT Auth** pour l'authentification
 - **MySQL** comme base de données
 - **phpMyAdmin** pour gérer la base de données via une interface graphique
-- **Nginx** pour servir l'application Symfony
+- **Apache** pour servir l'application Symfony
 
 ## ⚙️ Fonctionnalités à venir
 
@@ -66,9 +66,9 @@ docker-compose up --build
 
 Ouvrez votre navigateur et rendez-vous aux adresses suivantes pour accéder aux différents services :
 
-- Backend Symfony (API) : http://localhost:8080 pour interagir avec l'API.
+- Backend Symfony (API) : http://localhost:8000 pour interagir avec l'API.
 - Frontend Vue.js : http://localhost:5173 pour l'interface utilisateur Vue.js.
-- phpMyAdmin : http://localhost:8081 pour gérer la base de données MySQL.
+- phpMyAdmin : http://localhost:8080 pour gérer la base de données MySQL.
 
 ### 4. Développement local
 
@@ -86,11 +86,4 @@ docker-compose exec vuejs bash
 
 ### 5. Développement local
 
-Pour accéder à la documentation interactive de l'api, accédez à l'url suivante : http://localhost:8080/api/doc
-
-
-
-
-
-
-
+Pour accéder à la documentation interactive de l'api, accédez à l'url suivante : http://localhost:8000/api/doc
