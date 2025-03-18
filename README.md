@@ -1,4 +1,4 @@
-# Projet Symfony + Vue.js + Docker
+# Projet Blog Symfony + Vue.js + Docker
 
 ## 🚧 En cours de développement
 
@@ -11,7 +11,7 @@ Ce projet me permet d'expérimenter avec différentes technologies et de m'amél
 
 ---
 
-Un projet **API-first** utilisant **Symfony** pour l'API, un **front-end Vue.js** avec **Axios** pour les requêtes API, et un environnement Docker avec 6 conteneurs pour une configuration complète et reproductible.
+Un projet **API-first** utilisant **Symfony** pour l'API, un **front-end Vue.js** avec **Axios** pour les requêtes API, et un environnement Docker avec 4 conteneurs pour une configuration complète et reproductible.
 
 ## 💻 Stack
 
@@ -28,13 +28,11 @@ Un projet **API-first** utilisant **Symfony** pour l'API, un **front-end Vue.js*
 ### Backend (Symfony)
 - Authentification via JWT avec gestion des rôles
 - Gestion des utilisateurs et des permissions
-- Création de projets et de tableaux de tâches (projet type **Trello**)
 - API REST documentée avec **Swagger UI**
   
 ### Frontend (Vue.js)
 - Interface utilisateur responsive avec **Vue.js** et **Vue Router**
 - Consommation de l'API via **Axios**
-- Gestion des tâches avec **VueDraggable** pour le drag-and-drop
 
 ## 📦 Prérequis
 
